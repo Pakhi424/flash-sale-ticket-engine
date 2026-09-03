@@ -1,0 +1,12 @@
+{
+  "name": "flash-sale-ticket-engine",
+  "version": "1.0.0",
+  "description": "A high-throughput distributed ticket reservation and scheduling system.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
