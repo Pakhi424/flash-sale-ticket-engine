@@ -11,6 +11,6 @@ app.get('/health', (req,res) => {
     });
 });
 
-app.list (PORT, ()  => {
+app.listen (PORT, ()  => {
   console.log(Engine backbone running smoothly on port ${PORT}`);
 });
