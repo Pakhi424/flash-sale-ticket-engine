@@ -4,6 +4,11 @@ const PORT = 3000;
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+    console.log(req.method + " request made to " + req.path);
+    next();
+});
+
 let notes = [
     { id: 1, title: "Initial Note", content: "Welcome to your scratchpad database!" }
 ];
