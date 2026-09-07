@@ -38,6 +38,14 @@ app.get('/health', (req,res) => {
     });
 });
 
+app.delete('/api.notes', (req, res) => {
+    const noteId = parseInt(req.params.id);
+
+    notes = notes.filter(n=> n.id !== notes.id);
+
+    res.json({message: 'Note with ID' + noteId+ "has been successfully deleted")};
+});
+
 app.listen (PORT, ()  => {
   console.log(`Engine backbone running smoothly on port ${PORT}`);
 });
