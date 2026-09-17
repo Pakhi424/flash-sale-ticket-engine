@@ -13,37 +13,53 @@ let notes = [
     { id: 1, title: "Initial Note", content: "Welcome to your scratchpad database!" }
 ];
 
-app.get('/api/notes', (req, res) => {
-    res.json(notes); 
+// 1. Add 'async' right here before the request parameters!
+app.get('/api/notes/:id', async (req, res) => {
+    
+    // 2. Add 'await' right before your database operational call
+    const note = await database.note.findUnique({
+        where: { id: parseInt(req.params.id) }
+    });
+
+    res.json(note);
 });
 
-app.post('/api/notes', (req,res) => {
-  const { title, content } = req.body;
+// 1. Mark the callback function as async
+app.post('/api/notes', async (req, res) => {
+    // Extract the incoming values from the request body translator
+    const { title, content } = req.body;
 
-  const newNote = {
-    id: notes.length + 1,
-    title: title,
-    content: content
-  };
+    // 2. Await the asynchronous database creation query
+    const newNote = await database.note.create({
+        data: {
+            title: title,
+            content: content
+        }
+    });
 
-  notes.push(newNote); 
-
-   res.status(201).json(newNote); 
+    // 3. Return a clean confirmation JSON to the user
+    res.status(201).json(newNote); 
 });
 
-app.get('/health', (req,res) => {
+app.get('/health', async (req,res) => {
   res.json({
     status: "alive",
     message: "Welcome to the Ticket Reservation Engine Foundation!" 
     });
 });
 
-app.delete('/api.notes', (req, res) => {
+// 1. Fixed the URL path string to support dynamic ':id' parameters
+app.delete('/api/notes/:id', async (req, res) => {
+    // Convert the URL string id parameter to an integer number
     const noteId = parseInt(req.params.id);
 
-    notes = notes.filter(n=> n.id !== notes.id);
+    // 2. Await the asynchronous database removal instruction
+    await database.note.delete({
+        where: { id: noteId }
+    });
 
-    res.json({message: 'Note with ID' + noteId+ "has been successfully deleted")};
+    // 3. Fixed the text string concatenation syntax using clean template backticks
+    res.json({ message: `Note with ID ${noteId} has been successfully deleted.` });
 });
 
 app.listen (PORT, ()  => {
